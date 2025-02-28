@@ -1,0 +1,6 @@
+@SabitovApp_HostAddress = http://localhost:5104
+
+GET {{SabitovApp_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
