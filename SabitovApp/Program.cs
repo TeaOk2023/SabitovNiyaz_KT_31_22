@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;
 using SabitovApp.Data;
+using SabitovApp.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -27,7 +28,7 @@ try
         app.UseSwagger();
         app.UseSwaggerUI();
     }
-
+    app.UseMiddleware<ExceptionHandlerMiddleware>();
     app.UseAuthorization();
     app.MapControllers();
 
