@@ -44,16 +44,16 @@ namespace SabitovApp.Data.Configuration
             builder.HasOne(t => t.AcademicDegree)
                    .WithMany(ad => ad.Teachers)
                    .HasForeignKey(t => t.AcademicDegreeId)
-                   .OnDelete(DeleteBehavior.SetNull); 
+                   .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasOne(t => t.Position)
                    .WithMany(p => p.Teachers)
                    .HasForeignKey(t => t.PositionId)
-                   .OnDelete(DeleteBehavior.Restrict); 
-        
+                   .OnDelete(DeleteBehavior.Restrict);
+
             builder.HasMany(t => t.Disciplines)
                    .WithMany(d => d.Teachers)
-                   .UsingEntity(j => j.ToTable("TeacherDisciplines").HasComment("Связь между преподавателями и дисциплинами")); 
+                   .UsingEntity(j => j.ToTable("TeacherDisciplines").HasComment("Связь между преподавателями и дисциплинами"));
         }
     }
 }

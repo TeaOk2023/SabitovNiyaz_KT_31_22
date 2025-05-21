@@ -16,10 +16,11 @@ namespace SabitovApp.Models
         [MaxLength(100)]
         public string LastName { get; set; }
 
-        public int? AcademicDegreeId { get; set; } 
+        public int? AcademicDegreeId { get; set; }
 
         [ForeignKey("AcademicDegreeId")]
         public AcademicDegree AcademicDegree { get; set; }
+
 
         public int PositionId { get; set; }
 
@@ -31,7 +32,6 @@ namespace SabitovApp.Models
         [ForeignKey("DepartmentId")]
         public Department Department { get; set; }
 
-        // Навигационное свойство для дисциплин, которые ведет преподаватель
         public ICollection<Discipline> Disciplines { get; set; } = new List<Discipline>();
     }
 }

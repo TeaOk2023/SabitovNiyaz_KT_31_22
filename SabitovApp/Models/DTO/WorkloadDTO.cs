@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SabitovApp.Models
+namespace SabitovApp.Models.DTO
 {
-    public class Workload
+    public class WorkloadDTO
     {
-        [Key]
         public int WorkloadId { get; set; }
 
         [Required]
@@ -13,9 +11,8 @@ namespace SabitovApp.Models
 
         public int DisciplineId { get; set; }
 
-        [ForeignKey("DisciplineId")]
-        public Discipline Discipline { get; set; }
-
         public bool isDeleted { get; set; }
+
+        public string? DisciplineName { get; set; }
     }
 }
