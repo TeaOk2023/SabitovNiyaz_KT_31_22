@@ -3,6 +3,7 @@ using NLog;
 using NLog.Web;
 using SabitovApp.Data;
 using SabitovApp.Middlewares;
+using SabitovApp.ServiceExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -19,6 +20,8 @@ try
 
     builder.Services.AddDbContext<StudentDbContex>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+    builder.Services.AddServices();
 
     var app = builder.Build();
 

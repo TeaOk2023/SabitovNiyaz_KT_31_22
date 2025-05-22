@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using SabitovApp.Data;
 using SabitovApp.Interfaces.WorkloadInterface;
 
+
 namespace SabitovApp.ServiceExtensions
 {
     public static class SerivceExtensions

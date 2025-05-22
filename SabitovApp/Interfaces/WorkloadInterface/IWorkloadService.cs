@@ -71,7 +71,7 @@ namespace SabitovApp.Interfaces.WorkloadInterface
 
             _dbContex.Set<Workload>().Add(workload);
             await _dbContex.SaveChangesAsync(cancellationToken);
-            workloadDto.WorkloadId = workload.WorkloadId;
+            //workloadDto.WorkloadId = workload.WorkloadId;
 
             return workloadDto;
         }

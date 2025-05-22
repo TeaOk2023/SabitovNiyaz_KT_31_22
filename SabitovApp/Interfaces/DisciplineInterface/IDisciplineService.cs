@@ -29,7 +29,7 @@ namespace SabitovApp.Interfaces.WorkloadInterface
                 discipline = discipline.Where(w => w.Teachers.Any(t => t.FirstName == filter.TeacherName));
             }
 
-            if (filter.start_hours.HasValue)
+            if (filter.start_hours.HasValue && filter.start_hours.Value != null)
             {
                 discipline = discipline.Where(d => d.Workloads.Any(w => w.Hours >= filter.start_hours.Value));
             }

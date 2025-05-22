@@ -19,11 +19,11 @@ namespace SabitovApp.Controllers
 
     
         [HttpPost(Name = "GetDisciplinesByFilter")]
-        public async Task<IActionResult> GetDisciplinesByFilterAsync(DisciplineFilter filter, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> GetDisciplinesByFilterAsync([FromQuery] DisciplineFilter filter, CancellationToken cancellationToken = default)
         {
             var disciplines = await _disciplineService.GetDisciplinesByFilterAsync(filter, cancellationToken);
 
-            if (disciplines == null)
+            if (disciplines == null || disciplines.Length == 0)
             {
                 return NotFound();
             }

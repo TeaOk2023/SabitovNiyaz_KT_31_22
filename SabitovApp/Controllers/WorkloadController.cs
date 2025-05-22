@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SabitovApp.Interfaces.WorkloadInterface;
 using SabitovApp.Models;
 using SabitovApp.Models.DTO;
@@ -52,28 +51,24 @@ namespace SabitovApp.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateWorkloadAsync([FromBody] WorkloadCreateDTO workloadDto, CancellationToken cancellationToken = default)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var createdWorkload = await _workloadService.AddWorkloadAsync(workloadDto, cancellationToken);
 
-            return CreatedAtAction("GetWorkloadById", new { id = createdWorkload.WorkloadId }, createdWorkload);
+            if (createdWorkload == null)
+            {
+                return BadRequest("Ошибка создания");
+            }
+
+            return CreatedAtAction("GetWorkloadById", createdWorkload);
         }
 
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateWorkloadAsync(int id, [FromBody] WorkloadDTO workloadDto, CancellationToken cancellationToken = default)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
             if (id != workloadDto.WorkloadId)
             {
-                return BadRequest("ID in the request body does not match the ID in the route.");
+                return BadRequest("ID не совпали");
             }
 
             var existingWorkload = await _workloadService.GetWorkloadByIdAsync(id, cancellationToken);
