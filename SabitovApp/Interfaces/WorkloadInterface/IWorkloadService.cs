@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using SabitovApp.Data;
 using SabitovApp.Models;
 using SabitovApp.Models.DTO;
@@ -10,8 +11,8 @@ namespace SabitovApp.Interfaces.WorkloadInterface
         public Task<WorkloadDTO[]> GetWorkloadsAsync(CancellationToken cancellationToken);
 
         public Task<WorkloadDTO?> GetWorkloadByIdAsync(int id, CancellationToken cancellationToken);
-        Task<WorkloadCreateDTO> AddWorkloadAsync(WorkloadCreateDTO workloadDto, CancellationToken cancellationToken);
-        Task UpdateWorkloadAsync(int id, WorkloadDTO workload, CancellationToken cancellationToken);
+        Task<WorkloadDTO?> AddWorkloadAsync(WorkloadCreateDTO workloadDto, CancellationToken cancellationToken);
+        Task UpdateWorkloadAsync(int id, WorkloadCreateDTO workload, CancellationToken cancellationToken);
         Task DeleteWorkloadAsync(int id, CancellationToken cancellationToken);
     }
 
@@ -60,8 +61,15 @@ namespace SabitovApp.Interfaces.WorkloadInterface
             };
         }
 
-        public async Task<WorkloadCreateDTO> AddWorkloadAsync(WorkloadCreateDTO workloadDto, CancellationToken cancellationToken)
+        public async Task<WorkloadDTO?> AddWorkloadAsync(WorkloadCreateDTO workloadDto, CancellationToken cancellationToken)
         {
+            bool disciplineExists = await _dbContex.Set<Discipline>().AnyAsync(d => d.DisciplineId == workloadDto.DisciplineId, cancellationToken);
+
+            if (!disciplineExists)
+            {
+                return null;
+            }
+
             var workload = new Workload
             {
                 Hours = workloadDto.Hours,
@@ -71,13 +79,23 @@ namespace SabitovApp.Interfaces.WorkloadInterface
 
             _dbContex.Set<Workload>().Add(workload);
             await _dbContex.SaveChangesAsync(cancellationToken);
-            //workloadDto.WorkloadId = workload.WorkloadId;
 
-            return workloadDto;
+            var name = await _dbContex.Set<Discipline>().FirstOrDefaultAsync(x => x.DisciplineId == workload.DisciplineId, cancellationToken);
+
+            var workloadDtoWithId = new WorkloadDTO
+            {
+                WorkloadId = workload.WorkloadId,
+                Hours = workload.Hours,
+                DisciplineId = workload.DisciplineId,
+                DisciplineName = name.Name, 
+                isDeleted = workload.isDeleted
+            };
+
+            return workloadDtoWithId;
         }
 
 
-        public async Task UpdateWorkloadAsync(int id, WorkloadDTO workloadDto, CancellationToken cancellationToken)
+        public async Task UpdateWorkloadAsync(int id, WorkloadCreateDTO workloadDto, CancellationToken cancellationToken)
         {
 
             var workload = await _dbContex.Set<Workload>().FindAsync(id);
@@ -89,7 +107,6 @@ namespace SabitovApp.Interfaces.WorkloadInterface
 
             workload.Hours = workloadDto.Hours;
             workload.DisciplineId = workloadDto.DisciplineId;
-            //workload.isDeleted = workloadDto.isDeleted;
 
             await _dbContex.SaveChangesAsync(cancellationToken);
         }

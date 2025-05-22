@@ -35,16 +35,13 @@ namespace SabitovApp.Controllers
         [HttpGet("{id}", Name = "GetWorkloadById")]
         public async Task<IActionResult> GetWorkloadByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            _logger.LogInformation($"GetWorkloadByIdAsync endpoint called with id: {id}");
             var workload = await _workloadService.GetWorkloadByIdAsync(id, cancellationToken);
 
             if (workload == null)
             {
-                _logger.LogWarning($"Workload with id: {id} not found.");
-                return NotFound();
+                return BadRequest("Не найдена запись с таким id");
             }
 
-            _logger.LogInformation($"Successfully retrieved workload with id: {id}.");
             return Ok(workload);
         }
 
@@ -55,27 +52,22 @@ namespace SabitovApp.Controllers
 
             if (createdWorkload == null)
             {
-                return BadRequest("Ошибка создания");
+                return BadRequest("Ошибка создания, указанная дисциплина не существует!");
             }
 
-            return CreatedAtAction("GetWorkloadById", createdWorkload);
+            return CreatedAtAction("GetWorkloadById", new { id = createdWorkload.WorkloadId }, createdWorkload);
         }
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateWorkloadAsync(int id, [FromBody] WorkloadDTO workloadDto, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> UpdateWorkloadAsync(int id, [FromBody] WorkloadCreateDTO workloadDto, CancellationToken cancellationToken = default)
         {
-
-            if (id != workloadDto.WorkloadId)
-            {
-                return BadRequest("ID не совпали");
-            }
 
             var existingWorkload = await _workloadService.GetWorkloadByIdAsync(id, cancellationToken);
 
             if (existingWorkload == null)
             {
-                return NotFound();
+                return BadRequest("Не существует записи с указанным id");
             }
 
             await _workloadService.UpdateWorkloadAsync(id, workloadDto, cancellationToken);

@@ -4,9 +4,7 @@ namespace SabitovApp.Models.DTO
 {
     public class WorkloadCreateDTO
     {
-        /// <summary>
-        /// public int WorkloadId { get; set; }
-        /// </summary>
+        //public int WorkloadId { get; set; }
 
         [Required]
         public int Hours { get; set; }
