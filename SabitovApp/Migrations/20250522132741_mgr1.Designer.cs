@@ -11,11 +11,7 @@ using SabitovApp.Data;
 namespace SabitovApp.Migrations
 {
     [DbContext(typeof(StudentDbContex))]
-<<<<<<<< HEAD:SabitovApp/Migrations/20250518105900_mgr1.Designer.cs
-    [Migration("20250518105900_mgr1")]
-========
-    [Migration("20250521165152_mgr1")]
->>>>>>>> f965587 (compleate lab4):SabitovApp/Migrations/20250521165152_mgr1.Designer.cs
+    [Migration("20250522132741_mgr1")]
     partial class mgr1
     {
         /// <inheritdoc />
@@ -212,6 +208,9 @@ namespace SabitovApp.Migrations
                         .HasColumnType("int")
                         .HasColumnName("Hours")
                         .HasComment("Количество часов нагрузки");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("WorkloadId");
 

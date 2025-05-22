@@ -206,6 +206,9 @@ namespace SabitovApp.Migrations
                         .HasColumnName("Hours")
                         .HasComment("Количество часов нагрузки");
 
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("WorkloadId");
 
                     b.HasIndex("DisciplineId");

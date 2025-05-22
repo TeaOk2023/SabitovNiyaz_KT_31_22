@@ -56,7 +56,8 @@ namespace SabitovApp.Migrations
                     WorkloadId = table.Column<int>(type: "int", nullable: false, comment: "Идентификатор нагрузки")
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Hours = table.Column<int>(type: "int", nullable: false, comment: "Количество часов нагрузки"),
-                    DisciplineId = table.Column<int>(type: "int", nullable: false, comment: "Идентификатор дисциплины (ссылка на DisciplineId)")
+                    DisciplineId = table.Column<int>(type: "int", nullable: false, comment: "Идентификатор дисциплины (ссылка на DisciplineId)"),
+                    isDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

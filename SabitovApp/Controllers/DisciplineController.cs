@@ -10,6 +10,12 @@ namespace SabitovApp.Controllers
     {
         private readonly ILogger<DisciplineController> _logger;
         private readonly IDisciplineService _disciplineService;
+        private DisciplineService service;
+
+        public DisciplineController(DisciplineService service)
+        {
+            this.service = service;
+        }
 
         public DisciplineController(ILogger<DisciplineController> logger, IDisciplineService disciplineService)
         {

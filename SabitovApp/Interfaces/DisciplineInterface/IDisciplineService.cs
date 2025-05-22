@@ -24,6 +24,7 @@ namespace SabitovApp.Interfaces.WorkloadInterface
         {
             var discipline = _dbContex.Set<Discipline>().Include(x => x.Workloads).Include(x => x.Teachers).AsQueryable();
 
+
             if (!string.IsNullOrEmpty(filter.TeacherName))
             {
                 discipline = discipline.Where(w => w.Teachers.Any(t => t.FirstName == filter.TeacherName));
@@ -37,6 +38,11 @@ namespace SabitovApp.Interfaces.WorkloadInterface
             if (filter.end_hours.HasValue)
             {
                 discipline = discipline.Where(d => d.Workloads.Any(w => w.Hours <= filter.end_hours.Value));
+            }
+
+            if (filter.start_hours > filter.end_hours)
+            {
+                return null;
             }
 
             return await discipline.Select(d => new DisciplineDTO
